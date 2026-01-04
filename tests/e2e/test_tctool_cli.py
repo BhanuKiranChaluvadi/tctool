@@ -32,6 +32,7 @@ def run_tctool(*args, cwd=None):
 # Test Classes
 # =============================================================================
 
+
 @pytest.mark.e2e
 class TestCLIHelp:
     """Test CLI help commands."""
@@ -79,7 +80,7 @@ class TestST2XMLCommand:
     @pytest.fixture
     def sample_st_file(self, temp_dir):
         """Create a sample ST file for testing."""
-        content = '''FUNCTION_BLOCK FB_Test
+        content = """FUNCTION_BLOCK FB_Test
 VAR_INPUT
     bEnable : BOOL;
 END_VAR
@@ -93,7 +94,7 @@ END_VAR
 IF bEnable THEN
     bDone := TRUE;
 END_IF
-END_FUNCTION_BLOCK'''
+END_FUNCTION_BLOCK"""
         st_file = temp_dir / "FB_Test.st"
         st_file.write_text(content, encoding="utf-8")
         return st_file
@@ -103,11 +104,7 @@ END_FUNCTION_BLOCK'''
         output_dir = temp_dir / "output"
 
         # Use positional arguments (input output)
-        result = run_tctool(
-            "st2xml",
-            str(sample_st_file),
-            str(output_dir)
-        )
+        result = run_tctool("st2xml", str(sample_st_file), str(output_dir))
 
         # Command should succeed
         assert result.returncode == 0, f"stderr: {result.stderr}"
@@ -119,28 +116,24 @@ END_FUNCTION_BLOCK'''
         # Output should be valid XML
         content = output_file.read_text(encoding="utf-8")
         assert '<?xml version="1.0"' in content
-        assert '<TcPlcObject' in content
-        assert 'FB_Test' in content
+        assert "<TcPlcObject" in content
+        assert "FB_Test" in content
 
     def test_st2xml_directory(self, temp_dir):
         """Test converting a directory of ST files."""
         # Create multiple ST files
         for name in ["FB_One", "FB_Two"]:
-            content = f'''FUNCTION_BLOCK {name}
+            content = f"""FUNCTION_BLOCK {name}
 VAR
     nValue : INT;
 END_VAR
-END_FUNCTION_BLOCK'''
+END_FUNCTION_BLOCK"""
             (temp_dir / f"{name}.st").write_text(content, encoding="utf-8")
 
         output_dir = temp_dir / "output"
 
         # Use positional arguments
-        result = run_tctool(
-            "st2xml",
-            str(temp_dir),
-            str(output_dir)
-        )
+        result = run_tctool("st2xml", str(temp_dir), str(output_dir))
 
         assert result.returncode == 0, f"stderr: {result.stderr}"
 
@@ -162,7 +155,7 @@ class TestXML2STCommand:
     @pytest.fixture
     def sample_xml_file(self, temp_dir):
         """Create a sample TcPOU XML file for testing."""
-        content = '''<?xml version="1.0" encoding="utf-8"?>
+        content = """<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Test" Id="{12345678-1234-1234-1234-123456789abc}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Test
@@ -178,7 +171,7 @@ END_VAR]]></Declaration>
 END_IF]]></ST>
     </Implementation>
   </POU>
-</TcPlcObject>'''
+</TcPlcObject>"""
         xml_file = temp_dir / "FB_Test.TcPOU"
         xml_file.write_text(content, encoding="utf-8")
         return xml_file
@@ -188,11 +181,7 @@ END_IF]]></ST>
         output_dir = temp_dir / "output"
 
         # Use positional arguments
-        result = run_tctool(
-            "xml2st",
-            str(sample_xml_file),
-            str(output_dir)
-        )
+        result = run_tctool("xml2st", str(sample_xml_file), str(output_dir))
 
         # Command should succeed
         assert result.returncode == 0, f"stderr: {result.stderr}"
@@ -210,11 +199,7 @@ END_IF]]></ST>
         output_dir = temp_dir / "output"
 
         # Use positional arguments
-        result = run_tctool(
-            "xml2st",
-            str(temp_dir),
-            str(output_dir)
-        )
+        result = run_tctool("xml2st", str(temp_dir), str(output_dir))
 
         assert result.returncode == 0, f"stderr: {result.stderr}"
 
@@ -233,7 +218,7 @@ class TestFormatSTCommand:
     @pytest.fixture
     def unformatted_st_file(self, temp_dir):
         """Create an unformatted ST file for testing."""
-        content = '''FUNCTION_BLOCK FB_Test
+        content = """FUNCTION_BLOCK FB_Test
 VAR
 x:INT;
 y:BOOL;
@@ -241,28 +226,20 @@ END_VAR
 IF x>0 THEN
 y:=TRUE;
 END_IF
-END_FUNCTION_BLOCK'''
+END_FUNCTION_BLOCK"""
         st_file = temp_dir / "FB_Test.st"
         st_file.write_text(content, encoding="utf-8")
         return st_file
 
     def test_fmt_st_check(self, unformatted_st_file):
         """Test checking ST file format."""
-        result = run_tctool(
-            "fmt-st",
-            str(unformatted_st_file),
-            "--check"
-        )
+        result = run_tctool("fmt-st", str(unformatted_st_file), "--check")
         # May return non-zero if formatting needed, that's OK
         assert result.returncode in [0, 1]
 
     def test_fmt_st_in_place(self, temp_dir, unformatted_st_file):
         """Test formatting ST file in-place."""
-        result = run_tctool(
-            "fmt-st",
-            str(unformatted_st_file),
-            "--inplace"
-        )
+        result = run_tctool("fmt-st", str(unformatted_st_file), "--inplace")
 
         # Command should succeed
         assert result.returncode == 0, f"stderr: {result.stderr}"
@@ -285,7 +262,7 @@ class TestFormatXMLCommand:
     @pytest.fixture
     def sample_xml_file(self, temp_dir):
         """Create a sample TcPOU XML file."""
-        content = '''<?xml version="1.0" encoding="utf-8"?>
+        content = """<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Test" Id="{12345678-1234-1234-1234-123456789abc}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Test
@@ -296,27 +273,20 @@ END_VAR]]></Declaration>
       <ST><![CDATA[x := 1;]]></ST>
     </Implementation>
   </POU>
-</TcPlcObject>'''
+</TcPlcObject>"""
         xml_file = temp_dir / "FB_Test.TcPOU"
         xml_file.write_text(content, encoding="utf-8")
         return xml_file
 
     def test_fmt_xml_check(self, sample_xml_file):
         """Test checking XML file format."""
-        result = run_tctool(
-            "fmt-xml",
-            str(sample_xml_file),
-            "--check"
-        )
+        result = run_tctool("fmt-xml", str(sample_xml_file), "--check")
         # Check mode should work
         assert result.returncode in [0, 1]
 
     def test_fmt_xml_format(self, sample_xml_file):
         """Test formatting XML file."""
-        result = run_tctool(
-            "fmt-xml",
-            str(sample_xml_file)
-        )
+        result = run_tctool("fmt-xml", str(sample_xml_file))
         assert result.returncode == 0, f"stderr: {result.stderr}"
 
 
@@ -334,7 +304,7 @@ class TestCLIRoundTrip:
     def test_st_to_xml_to_st_roundtrip(self, temp_dir):
         """Test ST -> XML -> ST round-trip via CLI."""
         # Create original ST file
-        original_st = '''FUNCTION_BLOCK FB_RoundTrip
+        original_st = """FUNCTION_BLOCK FB_RoundTrip
 VAR_INPUT
     nValue : INT;
 END_VAR
@@ -343,7 +313,7 @@ VAR_OUTPUT
 END_VAR
 
 nResult := nValue * 2;
-END_FUNCTION_BLOCK'''
+END_FUNCTION_BLOCK"""
 
         st_file = temp_dir / "FB_RoundTrip.st"
         st_file.write_text(original_st, encoding="utf-8")
@@ -396,11 +366,7 @@ class TestCLIWithFixtures:
 
         output_dir = temp_output_dir / "output"
 
-        result = run_tctool(
-            "st2xml",
-            str(st_dir),
-            str(output_dir)
-        )
+        result = run_tctool("st2xml", str(st_dir), str(output_dir))
 
         assert result.returncode == 0, f"stderr: {result.stderr}"
 
@@ -412,11 +378,7 @@ class TestCLIWithFixtures:
 
         output_dir = temp_output_dir / "output"
 
-        result = run_tctool(
-            "xml2st",
-            str(xml_dir),
-            str(output_dir)
-        )
+        result = run_tctool("xml2st", str(xml_dir), str(output_dir))
 
         assert result.returncode == 0, f"stderr: {result.stderr}"
 
@@ -435,7 +397,9 @@ class TestCLIErrorHandling:
         result = run_tctool("st2xml", "/nonexistent/path/file.st")
         # Should handle gracefully - check both stdout and stderr for error messages
         combined_output = (result.stdout + result.stderr).lower()
-        assert result.returncode != 0 or "error" in combined_output or "not found" in combined_output
+        assert (
+            result.returncode != 0 or "error" in combined_output or "not found" in combined_output
+        )
 
     def test_invalid_arguments(self):
         """Test error on invalid arguments."""

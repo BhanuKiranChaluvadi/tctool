@@ -14,6 +14,7 @@ from tctool.converters.st_to_xml import STParser, XMLGenerator
 # Fixtures
 # =============================================================================
 
+
 @pytest.fixture
 def parser():
     """Create an STParser instance."""
@@ -42,6 +43,7 @@ def st_fixtures_dir(fixtures_dir):
 # Test Classes
 # =============================================================================
 
+
 @pytest.mark.integration
 class TestSTToXMLFunctionBlock:
     """Test ST to XML conversion for Function Blocks."""
@@ -57,11 +59,11 @@ class TestSTToXMLFunctionBlock:
         xml = generator.generate(parsed)
 
         assert '<?xml version="1.0"' in xml
-        assert '<TcPlcObject' in xml
+        assert "<TcPlcObject" in xml
         assert 'Name="FB_Sample"' in xml
-        assert '<Declaration>' in xml
-        assert '<Implementation>' in xml
-        assert '</TcPlcObject>' in xml
+        assert "<Declaration>" in xml
+        assert "<Implementation>" in xml
+        assert "</TcPlcObject>" in xml
 
     def test_fb_with_extends_conversion(self, parser, generator, st_fixtures_dir):
         """Test conversion of function block with EXTENDS."""
@@ -74,7 +76,7 @@ class TestSTToXMLFunctionBlock:
         xml = generator.generate(parsed)
 
         assert 'Name="FB_AlwaysFailure"' in xml
-        assert 'EXTENDS' in xml
+        assert "EXTENDS" in xml
 
     def test_fb_with_implements_conversion(self, parser, generator, st_fixtures_dir):
         """Test conversion of function block with IMPLEMENTS."""
@@ -87,7 +89,7 @@ class TestSTToXMLFunctionBlock:
         xml = generator.generate(parsed)
 
         assert 'Name="FB_BaseNode"' in xml
-        assert 'IMPLEMENTS' in xml
+        assert "IMPLEMENTS" in xml
 
 
 @pytest.mark.integration
@@ -96,7 +98,7 @@ class TestSTToXMLProgram:
 
     def test_program_conversion(self, parser, generator):
         """Test conversion of program."""
-        st_content = '''PROGRAM PRG_Main
+        st_content = """PROGRAM PRG_Main
 VAR
     counter : INT;
     bActive : BOOL;
@@ -106,14 +108,14 @@ counter := counter + 1;
 IF counter > 100 THEN
     bActive := FALSE;
 END_IF
-END_PROGRAM'''
+END_PROGRAM"""
 
         parsed = parser.parse(st_content)
         xml = generator.generate(parsed)
 
         assert 'Name="PRG_Main"' in xml
-        assert 'PROGRAM' in xml
-        assert 'counter' in xml
+        assert "PROGRAM" in xml
+        assert "counter" in xml
 
 
 @pytest.mark.integration
@@ -122,20 +124,20 @@ class TestSTToXMLFunction:
 
     def test_function_conversion(self, parser, generator):
         """Test conversion of function."""
-        st_content = '''FUNCTION F_Add : INT
+        st_content = """FUNCTION F_Add : INT
 VAR_INPUT
     a : INT;
     b : INT;
 END_VAR
 
 F_Add := a + b;
-END_FUNCTION'''
+END_FUNCTION"""
 
         parsed = parser.parse(st_content)
         xml = generator.generate(parsed)
 
         assert 'Name="F_Add"' in xml
-        assert 'FUNCTION F_Add' in xml
+        assert "FUNCTION F_Add" in xml
 
 
 @pytest.mark.integration
@@ -153,7 +155,7 @@ class TestSTToXMLDUT:
         xml = generator.generate(parsed)
 
         assert 'Name="E_NodeStatus"' in xml
-        assert '<DUT' in xml
+        assert "<DUT" in xml
 
     def test_struct_conversion(self, parser, generator, st_fixtures_dir):
         """Test conversion of struct."""
@@ -165,7 +167,7 @@ class TestSTToXMLDUT:
         parsed = parser.parse(st_content)
         xml = generator.generate(parsed)
 
-        assert '<DUT' in xml
+        assert "<DUT" in xml
 
 
 @pytest.mark.integration
@@ -183,7 +185,7 @@ class TestSTToXMLInterface:
         xml = generator.generate(parsed)
 
         assert 'Name="I_TreeNode"' in xml
-        assert '<Itf' in xml
+        assert "<Itf" in xml
 
     def test_interface_with_methods(self, parser, generator, st_fixtures_dir):
         """Test interface methods are converted."""
@@ -196,7 +198,7 @@ class TestSTToXMLInterface:
         xml = generator.generate(parsed)
 
         # Interface should have method elements
-        assert '<Method' in xml or 'METHOD' in xml
+        assert "<Method" in xml or "METHOD" in xml
 
 
 @pytest.mark.integration
@@ -213,8 +215,8 @@ class TestSTToXMLGVL:
         parsed = parser.parse(st_content)
         xml = generator.generate(parsed)
 
-        assert '<GVL' in xml
-        assert 'VAR_GLOBAL' in xml
+        assert "<GVL" in xml
+        assert "VAR_GLOBAL" in xml
 
 
 @pytest.mark.integration
@@ -232,8 +234,8 @@ class TestSTToXMLMethods:
         xml = generator.generate(parsed)
 
         # Should have Method elements
-        assert 'FB_ActionNode' in xml
-        assert '<Method' in xml or 'METHOD' in xml
+        assert "FB_ActionNode" in xml
+        assert "<Method" in xml or "METHOD" in xml
 
 
 @pytest.mark.integration
@@ -251,7 +253,7 @@ class TestSTToXMLProperties:
         xml = generator.generate(parsed)
 
         # Should have Property elements
-        assert '<Property' in xml or 'PROPERTY' in xml
+        assert "<Property" in xml or "PROPERTY" in xml
 
 
 @pytest.mark.integration
@@ -260,20 +262,20 @@ class TestSTToXMLAttributes:
 
     def test_pragma_preserved(self, parser, generator):
         """Test that pragmas are preserved."""
-        st_content = '''{attribute 'qualified_only'}
+        st_content = """{attribute 'qualified_only'}
 {attribute 'strict'}
 TYPE E_Test :
 (
     VALUE_A := 0,
     VALUE_B := 1
 );
-END_TYPE'''
+END_TYPE"""
 
         parsed = parser.parse(st_content)
         xml = generator.generate(parsed)
 
-        assert 'qualified_only' in xml
-        assert 'strict' in xml
+        assert "qualified_only" in xml
+        assert "strict" in xml
 
 
 @pytest.mark.integration
@@ -282,11 +284,11 @@ class TestSTToXMLEdgeCases:
 
     def test_empty_implementation(self, parser, generator):
         """Test FB with empty implementation."""
-        st_content = '''FUNCTION_BLOCK FB_Empty
+        st_content = """FUNCTION_BLOCK FB_Empty
 VAR
 END_VAR
 
-END_FUNCTION_BLOCK'''
+END_FUNCTION_BLOCK"""
 
         parsed = parser.parse(st_content)
         xml = generator.generate(parsed)
@@ -295,14 +297,14 @@ END_FUNCTION_BLOCK'''
 
     def test_special_characters_in_strings(self, parser, generator):
         """Test special characters in string literals."""
-        st_content = '''FUNCTION_BLOCK FB_Special
+        st_content = """FUNCTION_BLOCK FB_Special
 VAR
     sText : STRING := 'Temperature: 25°C';
 END_VAR
 
-END_FUNCTION_BLOCK'''
+END_FUNCTION_BLOCK"""
 
         parsed = parser.parse(st_content)
         xml = generator.generate(parsed)
 
-        assert 'FB_Special' in xml
+        assert "FB_Special" in xml

@@ -16,6 +16,7 @@ from tctool.converters.xml_to_st import STGenerator, TwinCATXMLParser
 # Fixtures
 # =============================================================================
 
+
 @pytest.fixture
 def st_parser():
     """Create an STParser instance."""
@@ -107,7 +108,7 @@ class TestAllSTToXML:
         xml = xml_generator.generate(parsed)
         assert xml is not None, f"Failed to generate XML for {filename}"
         assert '<?xml version="1.0"' in xml, f"Missing XML declaration in {filename}"
-        assert '<TcPlcObject' in xml, f"Missing TcPlcObject in {filename}"
+        assert "<TcPlcObject" in xml, f"Missing TcPlcObject in {filename}"
 
         # Get expected name from filename
         name = filename.replace(".st", "")
@@ -211,7 +212,9 @@ class TestAllXMLToST:
             assert name in st, f"Name '{name}' not found in ST output for {filename}"
 
     @pytest.mark.parametrize("filename", XML_FIXTURE_FILES)
-    def test_xml_structure_elements_extracted(self, xml_parser, st_generator, xml_fixtures_dir, filename):
+    def test_xml_structure_elements_extracted(
+        self, xml_parser, st_generator, xml_fixtures_dir, filename
+    ):
         """Test that key structural elements are extracted from XML."""
         xml_file = xml_fixtures_dir / filename
         if not xml_file.exists():
@@ -271,8 +274,16 @@ class TestSTXMLPairRoundTrip:
     """Test round-trip conversion for matching ST/XML pairs."""
 
     @pytest.mark.parametrize("st_filename,xml_filename", MATCHING_ST_XML_PAIRS)
-    def test_st_roundtrip(self, st_parser, xml_generator, xml_parser, st_generator,
-                          st_fixtures_dir, st_filename, xml_filename):
+    def test_st_roundtrip(
+        self,
+        st_parser,
+        xml_generator,
+        xml_parser,
+        st_generator,
+        st_fixtures_dir,
+        st_filename,
+        xml_filename,
+    ):
         """Test ST -> XML -> ST round-trip preserves key elements."""
         st_file = st_fixtures_dir / st_filename
         if not st_file.exists():
@@ -293,9 +304,13 @@ class TestSTXMLPairRoundTrip:
 
         # GVLs don't include name in ST output (VAR_GLOBAL is anonymous)
         if st_filename.startswith("GVL_"):
-            assert "VAR_GLOBAL" in recovered_st, f"VAR_GLOBAL not preserved in round-trip for {st_filename}"
+            assert "VAR_GLOBAL" in recovered_st, (
+                f"VAR_GLOBAL not preserved in round-trip for {st_filename}"
+            )
         else:
-            assert name in recovered_st, f"Name '{name}' not preserved in round-trip for {st_filename}"
+            assert name in recovered_st, (
+                f"Name '{name}' not preserved in round-trip for {st_filename}"
+            )
 
         # Check structural elements
         if "FUNCTION_BLOCK" in original_st:
@@ -308,8 +323,16 @@ class TestSTXMLPairRoundTrip:
             assert "INTERFACE" in recovered_st
 
     @pytest.mark.parametrize("st_filename,xml_filename", MATCHING_ST_XML_PAIRS)
-    def test_xml_roundtrip(self, st_parser, xml_generator, xml_parser, st_generator,
-                           xml_fixtures_dir, st_filename, xml_filename):
+    def test_xml_roundtrip(
+        self,
+        st_parser,
+        xml_generator,
+        xml_parser,
+        st_generator,
+        xml_fixtures_dir,
+        st_filename,
+        xml_filename,
+    ):
         """Test XML -> ST -> XML round-trip preserves key elements."""
         xml_file = xml_fixtures_dir / xml_filename
         if not xml_file.exists():
@@ -332,10 +355,16 @@ class TestSTXMLPairRoundTrip:
         # (since ST doesn't encode the GVL name in VAR_GLOBAL blocks)
         if xml_filename.endswith(".TcGVL"):
             # Just verify the GVL structure is preserved
-            assert "<GVL" in recovered_xml, f"GVL element not preserved in round-trip for {xml_filename}"
-            assert "VAR_GLOBAL" in recovered_xml, f"VAR_GLOBAL not preserved in round-trip for {xml_filename}"
+            assert "<GVL" in recovered_xml, (
+                f"GVL element not preserved in round-trip for {xml_filename}"
+            )
+            assert "VAR_GLOBAL" in recovered_xml, (
+                f"VAR_GLOBAL not preserved in round-trip for {xml_filename}"
+            )
         else:
-            assert f'Name="{name}"' in recovered_xml, f"Name not preserved in round-trip for {xml_filename}"
+            assert f'Name="{name}"' in recovered_xml, (
+                f"Name not preserved in round-trip for {xml_filename}"
+            )
 
         # Check structural elements
         if "<Declaration>" in original_xml:
@@ -343,15 +372,19 @@ class TestSTXMLPairRoundTrip:
         if "<Implementation>" in original_xml:
             assert "<Implementation>" in recovered_xml
 
+
 # =============================================================================
 # Specific feature tests
 # =============================================================================
+
 
 @pytest.mark.integration
 class TestSpecificFeatures:
     """Test specific features across fixture files."""
 
-    def test_extends_preserved_in_fb(self, st_parser, xml_generator, xml_parser, st_generator, st_fixtures_dir):
+    def test_extends_preserved_in_fb(
+        self, st_parser, xml_generator, xml_parser, st_generator, st_fixtures_dir
+    ):
         """Test EXTENDS is preserved through conversion."""
         st_file = st_fixtures_dir / "FB_AlwaysFailure.st"
         if not st_file.exists():
@@ -367,7 +400,9 @@ class TestSpecificFeatures:
 
         assert "EXTENDS" in recovered_st, "EXTENDS not preserved"
 
-    def test_implements_preserved_in_fb(self, st_parser, xml_generator, xml_parser, st_generator, st_fixtures_dir):
+    def test_implements_preserved_in_fb(
+        self, st_parser, xml_generator, xml_parser, st_generator, st_fixtures_dir
+    ):
         """Test IMPLEMENTS is preserved through conversion."""
         st_file = st_fixtures_dir / "FB_BaseNode.st"
         if not st_file.exists():
@@ -383,7 +418,9 @@ class TestSpecificFeatures:
 
         assert "IMPLEMENTS" in recovered_st, "IMPLEMENTS not preserved"
 
-    def test_methods_preserved_in_fb(self, st_parser, xml_generator, xml_parser, st_generator, st_fixtures_dir):
+    def test_methods_preserved_in_fb(
+        self, st_parser, xml_generator, xml_parser, st_generator, st_fixtures_dir
+    ):
         """Test methods are preserved through conversion."""
         st_file = st_fixtures_dir / "FB_WithMethods.st"
         if not st_file.exists():
@@ -399,7 +436,9 @@ class TestSpecificFeatures:
 
         assert "METHOD" in recovered_st, "METHOD not preserved"
 
-    def test_properties_preserved_in_fb(self, st_parser, xml_generator, xml_parser, st_generator, st_fixtures_dir):
+    def test_properties_preserved_in_fb(
+        self, st_parser, xml_generator, xml_parser, st_generator, st_fixtures_dir
+    ):
         """Test properties are preserved through conversion."""
         st_file = st_fixtures_dir / "FB_WithProperties.st"
         if not st_file.exists():
@@ -415,7 +454,9 @@ class TestSpecificFeatures:
 
         assert "PROPERTY" in recovered_st, "PROPERTY not preserved"
 
-    def test_interface_methods_preserved(self, st_parser, xml_generator, xml_parser, st_generator, st_fixtures_dir):
+    def test_interface_methods_preserved(
+        self, st_parser, xml_generator, xml_parser, st_generator, st_fixtures_dir
+    ):
         """Test interface methods are preserved through conversion."""
         st_file = st_fixtures_dir / "I_TreeNode.st"
         if not st_file.exists():
@@ -431,7 +472,9 @@ class TestSpecificFeatures:
 
         assert "METHOD" in recovered_st, "Interface methods not preserved"
 
-    def test_var_blocks_preserved(self, st_parser, xml_generator, xml_parser, st_generator, st_fixtures_dir):
+    def test_var_blocks_preserved(
+        self, st_parser, xml_generator, xml_parser, st_generator, st_fixtures_dir
+    ):
         """Test VAR blocks are preserved through conversion."""
         st_file = st_fixtures_dir / "FB_Sample.st"
         if not st_file.exists():
@@ -453,7 +496,9 @@ class TestSpecificFeatures:
         if "VAR\n" in original_st or "VAR\r\n" in original_st:
             assert "VAR" in recovered_st, "VAR not preserved"
 
-    def test_enum_values_preserved(self, st_parser, xml_generator, xml_parser, st_generator, st_fixtures_dir):
+    def test_enum_values_preserved(
+        self, st_parser, xml_generator, xml_parser, st_generator, st_fixtures_dir
+    ):
         """Test enum values are preserved through conversion."""
         st_file = st_fixtures_dir / "E_NodeStatus.st"
         if not st_file.exists():

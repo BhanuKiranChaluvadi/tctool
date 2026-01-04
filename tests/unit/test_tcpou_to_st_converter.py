@@ -16,6 +16,7 @@ from tctool.converters.xml_to_st import STGenerator, TcFileType, TwinCATXMLParse
 # Fixtures
 # =============================================================================
 
+
 @pytest.fixture
 def parser():
     """Create a TwinCATXMLParser instance."""
@@ -43,7 +44,7 @@ def xml_fixtures_dir(fixtures_dir):
 @pytest.fixture
 def sample_function_block_xml():
     """Sample TcPOU XML for a function block."""
-    return '''<?xml version="1.0" encoding="utf-8"?>
+    return """<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Sample" Id="{12345678-1234-1234-1234-123456789abc}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Sample
@@ -64,13 +65,13 @@ END_VAR]]></Declaration>
 END_IF]]></ST>
     </Implementation>
   </POU>
-</TcPlcObject>'''
+</TcPlcObject>"""
 
 
 @pytest.fixture
 def sample_function_xml():
     """Sample TcPOU XML for a function."""
-    return '''<?xml version="1.0" encoding="utf-8"?>
+    return """<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="F_Add" Id="{12345678-1234-1234-1234-123456789abc}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION F_Add : INT
@@ -82,13 +83,13 @@ END_VAR]]></Declaration>
       <ST><![CDATA[F_Add := a + b;]]></ST>
     </Implementation>
   </POU>
-</TcPlcObject>'''
+</TcPlcObject>"""
 
 
 @pytest.fixture
 def sample_program_xml():
     """Sample TcPOU XML for a program."""
-    return '''<?xml version="1.0" encoding="utf-8"?>
+    return """<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="PRG_Main" Id="{12345678-1234-1234-1234-123456789abc}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_Main
@@ -99,13 +100,13 @@ END_VAR]]></Declaration>
       <ST><![CDATA[counter := counter + 1;]]></ST>
     </Implementation>
   </POU>
-</TcPlcObject>'''
+</TcPlcObject>"""
 
 
 @pytest.fixture
 def sample_struct_xml():
     """Sample TcDUT XML for a struct."""
-    return '''<?xml version="1.0" encoding="utf-8"?>
+    return """<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <DUT Name="ST_Point" Id="{12345678-1234-1234-1234-123456789abc}">
     <Declaration><![CDATA[TYPE ST_Point :
@@ -116,13 +117,13 @@ STRUCT
 END_STRUCT
 END_TYPE]]></Declaration>
   </DUT>
-</TcPlcObject>'''
+</TcPlcObject>"""
 
 
 @pytest.fixture
 def sample_enum_xml():
     """Sample TcDUT XML for an enum."""
-    return '''<?xml version="1.0" encoding="utf-8"?>
+    return """<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <DUT Name="E_State" Id="{12345678-1234-1234-1234-123456789abc}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
@@ -135,13 +136,13 @@ TYPE E_State :
 );
 END_TYPE]]></Declaration>
   </DUT>
-</TcPlcObject>'''
+</TcPlcObject>"""
 
 
 @pytest.fixture
 def sample_gvl_xml():
     """Sample TcGVL XML for global variables."""
-    return '''<?xml version="1.0" encoding="utf-8"?>
+    return """<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <GVL Name="GVL_Settings" Id="{12345678-1234-1234-1234-123456789abc}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
@@ -150,13 +151,13 @@ VAR_GLOBAL
     DEBUG_MODE : BOOL := FALSE;
 END_VAR]]></Declaration>
   </GVL>
-</TcPlcObject>'''
+</TcPlcObject>"""
 
 
 @pytest.fixture
 def sample_interface_xml():
     """Sample TcIO XML for an interface."""
-    return '''<?xml version="1.0" encoding="utf-8"?>
+    return """<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <Itf Name="I_Controllable" Id="{12345678-1234-1234-1234-123456789abc}">
     <Declaration><![CDATA[INTERFACE I_Controllable]]></Declaration>
@@ -167,13 +168,13 @@ def sample_interface_xml():
       <Declaration><![CDATA[METHOD Stop : BOOL]]></Declaration>
     </Method>
   </Itf>
-</TcPlcObject>'''
+</TcPlcObject>"""
 
 
 @pytest.fixture
 def sample_fb_with_methods_xml():
     """Sample TcPOU with methods and properties."""
-    return '''<?xml version="1.0" encoding="utf-8"?>
+    return """<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Counter" Id="{12345678-1234-1234-1234-123456789abc}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Counter
@@ -217,12 +218,13 @@ END_VAR]]></Declaration>
       </Set>
     </Property>
   </POU>
-</TcPlcObject>'''
+</TcPlcObject>"""
 
 
 # =============================================================================
 # Test Classes
 # =============================================================================
+
 
 @pytest.mark.unit
 class TestTwinCATXMLParser:
@@ -494,7 +496,7 @@ class TestEdgeCases:
 
     def test_empty_implementation(self, parser, generator):
         """Test handling of empty implementation section."""
-        xml = '''<?xml version="1.0" encoding="utf-8"?>
+        xml = """<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Empty" Id="{12345678-1234-1234-1234-123456789abc}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Empty
@@ -504,7 +506,7 @@ END_VAR]]></Declaration>
       <ST><![CDATA[]]></ST>
     </Implementation>
   </POU>
-</TcPlcObject>'''
+</TcPlcObject>"""
 
         tc_obj = parser.parse(xml)
         result = generator.generate(tc_obj)
@@ -514,7 +516,7 @@ END_VAR]]></Declaration>
 
     def test_special_characters_in_comments(self, parser, generator):
         """Test handling of special characters in comments."""
-        xml = '''<?xml version="1.0" encoding="utf-8"?>
+        xml = """<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_WithComments" Id="{12345678-1234-1234-1234-123456789abc}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_WithComments
@@ -528,7 +530,7 @@ comment with special chars: < > & *)
 x := 1;]]></ST>
     </Implementation>
   </POU>
-</TcPlcObject>'''
+</TcPlcObject>"""
 
         tc_obj = parser.parse(xml)
         result = generator.generate(tc_obj)
@@ -537,7 +539,7 @@ x := 1;]]></ST>
 
     def test_unicode_in_strings(self, parser, generator):
         """Test handling of unicode characters."""
-        xml = '''<?xml version="1.0" encoding="utf-8"?>
+        xml = """<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Unicode" Id="{12345678-1234-1234-1234-123456789abc}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Unicode
@@ -548,7 +550,7 @@ END_VAR]]></Declaration>
       <ST><![CDATA[// Nothing]]></ST>
     </Implementation>
   </POU>
-</TcPlcObject>'''
+</TcPlcObject>"""
 
         tc_obj = parser.parse(xml)
         result = generator.generate(tc_obj)

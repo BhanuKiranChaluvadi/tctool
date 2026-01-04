@@ -1,7 +1,6 @@
 # Tools/tests/unit/test_st_to_tcpou_converter.py
 """Unit tests for st_to_tcpou_converter.py module."""
 
-
 import pytest
 
 from tctool.converters.st_to_xml import (
@@ -307,9 +306,9 @@ END_FUNCTION_BLOCK"""
         xml_content = generator.generate(parsed)
 
         assert '<?xml version="1.0"' in xml_content
-        assert '<TcPlcObject' in xml_content
-        assert 'FB_Test' in xml_content
-        assert '</TcPlcObject>' in xml_content
+        assert "<TcPlcObject" in xml_content
+        assert "FB_Test" in xml_content
+        assert "</TcPlcObject>" in xml_content
 
     @pytest.mark.unit
     def test_cdata_sections(self, parser, generator):
@@ -325,8 +324,8 @@ END_FUNCTION_BLOCK"""
         parsed = parser.parse(code, "FB_Test")
         xml_content = generator.generate(parsed)
 
-        assert '<![CDATA[' in xml_content
-        assert ']]>' in xml_content
+        assert "<![CDATA[" in xml_content
+        assert "]]>" in xml_content
 
 
 class TestSTParserEdgeCases:

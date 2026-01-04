@@ -16,14 +16,15 @@ from tctool.converters.xml_to_st import STGenerator, TwinCATXMLParser
 # Helper Functions
 # =============================================================================
 
+
 def normalize_whitespace(text: str) -> str:
     """Normalize whitespace for comparison."""
-    lines = [line.strip() for line in text.strip().split('\n')]
+    lines = [line.strip() for line in text.strip().split("\n")]
     while lines and not lines[0]:
         lines.pop(0)
     while lines and not lines[-1]:
         lines.pop()
-    return '\n'.join(lines)
+    return "\n".join(lines)
 
 
 def extract_identifiers(text: str) -> set:
@@ -32,13 +33,13 @@ def extract_identifiers(text: str) -> set:
 
     # Extract POU names
     patterns = [
-        r'FUNCTION_BLOCK\s+(\w+)',
-        r'PROGRAM\s+(\w+)',
-        r'FUNCTION\s+(\w+)',
-        r'INTERFACE\s+(\w+)',
-        r'METHOD\s+(\w+)',
-        r'PROPERTY\s+(\w+)',
-        r'TYPE\s+(\w+)',
+        r"FUNCTION_BLOCK\s+(\w+)",
+        r"PROGRAM\s+(\w+)",
+        r"FUNCTION\s+(\w+)",
+        r"INTERFACE\s+(\w+)",
+        r"METHOD\s+(\w+)",
+        r"PROPERTY\s+(\w+)",
+        r"TYPE\s+(\w+)",
     ]
 
     for pattern in patterns:
@@ -56,6 +57,7 @@ def has_structural_elements(text: str, elements: list) -> bool:
 # =============================================================================
 # Fixtures
 # =============================================================================
+
 
 @pytest.fixture
 def st_parser():
@@ -103,11 +105,14 @@ def xml_fixtures_dir(fixtures_dir):
 # Test Classes
 # =============================================================================
 
+
 @pytest.mark.integration
 class TestSTToXMLToSTRoundtrip:
     """Test ST -> XML -> ST round-trip conversion."""
 
-    def test_simple_fb_roundtrip(self, st_parser, xml_generator, xml_parser, st_generator, st_fixtures_dir):
+    def test_simple_fb_roundtrip(
+        self, st_parser, xml_generator, xml_parser, st_generator, st_fixtures_dir
+    ):
         """Test simple FB survives round-trip."""
         st_file = st_fixtures_dir / "FB_Sample.st"
         if not st_file.exists():
@@ -130,7 +135,9 @@ class TestSTToXMLToSTRoundtrip:
         assert "FB_Sample" in recovered_ids
         assert "FUNCTION_BLOCK" in recovered_st
 
-    def test_fb_with_extends_roundtrip(self, st_parser, xml_generator, xml_parser, st_generator, st_fixtures_dir):
+    def test_fb_with_extends_roundtrip(
+        self, st_parser, xml_generator, xml_parser, st_generator, st_fixtures_dir
+    ):
         """Test FB with EXTENDS survives round-trip."""
         st_file = st_fixtures_dir / "FB_AlwaysFailure.st"
         if not st_file.exists():
@@ -148,7 +155,9 @@ class TestSTToXMLToSTRoundtrip:
         assert "EXTENDS" in recovered_st
         assert "FB_AlwaysFailure" in recovered_st
 
-    def test_fb_with_implements_roundtrip(self, st_parser, xml_generator, xml_parser, st_generator, st_fixtures_dir):
+    def test_fb_with_implements_roundtrip(
+        self, st_parser, xml_generator, xml_parser, st_generator, st_fixtures_dir
+    ):
         """Test FB with IMPLEMENTS survives round-trip."""
         st_file = st_fixtures_dir / "FB_BaseNode.st"
         if not st_file.exists():
@@ -166,7 +175,9 @@ class TestSTToXMLToSTRoundtrip:
         assert "IMPLEMENTS" in recovered_st
         assert "FB_BaseNode" in recovered_st
 
-    def test_enum_roundtrip(self, st_parser, xml_generator, xml_parser, st_generator, st_fixtures_dir):
+    def test_enum_roundtrip(
+        self, st_parser, xml_generator, xml_parser, st_generator, st_fixtures_dir
+    ):
         """Test enum survives round-trip."""
         st_file = st_fixtures_dir / "E_NodeStatus.st"
         if not st_file.exists():
@@ -183,7 +194,9 @@ class TestSTToXMLToSTRoundtrip:
         # Enum values should be preserved
         assert "E_NodeStatus" in recovered_st
 
-    def test_interface_roundtrip(self, st_parser, xml_generator, xml_parser, st_generator, st_fixtures_dir):
+    def test_interface_roundtrip(
+        self, st_parser, xml_generator, xml_parser, st_generator, st_fixtures_dir
+    ):
         """Test interface survives round-trip."""
         st_file = st_fixtures_dir / "I_TreeNode.st"
         if not st_file.exists():
@@ -206,7 +219,9 @@ class TestSTToXMLToSTRoundtrip:
 class TestXMLToSTToXMLRoundtrip:
     """Test XML -> ST -> XML round-trip conversion."""
 
-    def test_tcpou_roundtrip(self, xml_parser, st_generator, st_parser, xml_generator, xml_fixtures_dir):
+    def test_tcpou_roundtrip(
+        self, xml_parser, st_generator, st_parser, xml_generator, xml_fixtures_dir
+    ):
         """Test TcPOU survives round-trip."""
         xml_file = xml_fixtures_dir / "FB_Sample.TcPOU"
         if not xml_file.exists():
@@ -224,9 +239,11 @@ class TestXMLToSTToXMLRoundtrip:
 
         # Verify key elements preserved
         assert 'Name="FB_Sample"' in recovered_xml
-        assert '<TcPlcObject' in recovered_xml
+        assert "<TcPlcObject" in recovered_xml
 
-    def test_tcdut_roundtrip(self, xml_parser, st_generator, st_parser, xml_generator, xml_fixtures_dir):
+    def test_tcdut_roundtrip(
+        self, xml_parser, st_generator, st_parser, xml_generator, xml_fixtures_dir
+    ):
         """Test TcDUT survives round-trip."""
         xml_file = xml_fixtures_dir / "E_State.TcDUT"
         if not xml_file.exists():
@@ -241,16 +258,18 @@ class TestXMLToSTToXMLRoundtrip:
         recovered_xml = xml_generator.generate(parsed)
 
         # Verify DUT structure preserved
-        assert '<DUT' in recovered_xml or 'E_State' in recovered_xml
+        assert "<DUT" in recovered_xml or "E_State" in recovered_xml
 
 
 @pytest.mark.integration
 class TestRoundtripPreservation:
     """Test that important elements are preserved during round-trip."""
 
-    def test_variable_declarations_preserved(self, st_parser, xml_generator, xml_parser, st_generator):
+    def test_variable_declarations_preserved(
+        self, st_parser, xml_generator, xml_parser, st_generator
+    ):
         """Test variable declarations survive round-trip."""
-        original_st = '''FUNCTION_BLOCK FB_Test
+        original_st = """FUNCTION_BLOCK FB_Test
 VAR_INPUT
     bEnable : BOOL;
     nValue : INT;
@@ -267,7 +286,7 @@ IF bEnable THEN
     nResult := nValue * 2;
     bDone := TRUE;
 END_IF
-END_FUNCTION_BLOCK'''
+END_FUNCTION_BLOCK"""
 
         # Round-trip
         parsed = st_parser.parse(original_st)
@@ -284,7 +303,7 @@ END_FUNCTION_BLOCK'''
 
     def test_control_structures_preserved(self, st_parser, xml_generator, xml_parser, st_generator):
         """Test control structures survive round-trip."""
-        original_st = '''FUNCTION_BLOCK FB_Control
+        original_st = """FUNCTION_BLOCK FB_Control
 VAR
     x : INT;
 END_VAR
@@ -300,7 +319,7 @@ END_IF
 FOR i := 0 TO 10 DO
     x := x + i;
 END_FOR
-END_FUNCTION_BLOCK'''
+END_FUNCTION_BLOCK"""
 
         # Round-trip
         parsed = st_parser.parse(original_st)
@@ -315,7 +334,7 @@ END_FUNCTION_BLOCK'''
 
     def test_comments_preserved(self, st_parser, xml_generator, xml_parser, st_generator):
         """Test comments survive round-trip."""
-        original_st = '''FUNCTION_BLOCK FB_Comments
+        original_st = """FUNCTION_BLOCK FB_Comments
 // This is a single line comment
 VAR
     x : INT; // inline comment
@@ -324,7 +343,7 @@ END_VAR
 (* This is a
    multi-line comment *)
 x := 1;
-END_FUNCTION_BLOCK'''
+END_FUNCTION_BLOCK"""
 
         # Round-trip
         parsed = st_parser.parse(original_st)
@@ -342,11 +361,11 @@ class TestRoundtripEdgeCases:
 
     def test_empty_fb_roundtrip(self, st_parser, xml_generator, xml_parser, st_generator):
         """Test empty FB survives round-trip."""
-        original_st = '''FUNCTION_BLOCK FB_Empty
+        original_st = """FUNCTION_BLOCK FB_Empty
 VAR
 END_VAR
 
-END_FUNCTION_BLOCK'''
+END_FUNCTION_BLOCK"""
 
         # Round-trip
         parsed = st_parser.parse(original_st)
@@ -358,7 +377,7 @@ END_FUNCTION_BLOCK'''
 
     def test_complex_types_roundtrip(self, st_parser, xml_generator, xml_parser, st_generator):
         """Test complex types survive round-trip."""
-        original_st = '''FUNCTION_BLOCK FB_Complex
+        original_st = """FUNCTION_BLOCK FB_Complex
 VAR
     aData : ARRAY[0..99] OF INT;
     sText : STRING(255);
@@ -366,7 +385,7 @@ VAR
 END_VAR
 
 aData[0] := 42;
-END_FUNCTION_BLOCK'''
+END_FUNCTION_BLOCK"""
 
         # Round-trip
         parsed = st_parser.parse(original_st)

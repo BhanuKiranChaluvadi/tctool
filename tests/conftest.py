@@ -34,77 +34,77 @@ def tmp_output_dir(tmp_path: Path) -> Path:
 
 @pytest.fixture
 def st_simple_block(st_fixtures_dir: Path) -> str:
-    return (st_fixtures_dir / "FB_SimpleBlock.st").read_text(encoding='utf-8')
+    return (st_fixtures_dir / "FB_SimpleBlock.st").read_text(encoding="utf-8")
 
 
 @pytest.fixture
 def st_with_methods(st_fixtures_dir: Path) -> str:
-    return (st_fixtures_dir / "FB_WithMethods.st").read_text(encoding='utf-8')
+    return (st_fixtures_dir / "FB_WithMethods.st").read_text(encoding="utf-8")
 
 
 @pytest.fixture
 def st_with_properties(st_fixtures_dir: Path) -> str:
-    return (st_fixtures_dir / "FB_WithProperties.st").read_text(encoding='utf-8')
+    return (st_fixtures_dir / "FB_WithProperties.st").read_text(encoding="utf-8")
 
 
 @pytest.fixture
 def st_edge_cases(st_fixtures_dir: Path) -> str:
-    return (st_fixtures_dir / "FB_EdgeCases.st").read_text(encoding='utf-8')
+    return (st_fixtures_dir / "FB_EdgeCases.st").read_text(encoding="utf-8")
 
 
 @pytest.fixture
 def st_enum(st_fixtures_dir: Path) -> str:
-    return (st_fixtures_dir / "E_Status.st").read_text(encoding='utf-8')
+    return (st_fixtures_dir / "E_Status.st").read_text(encoding="utf-8")
 
 
 @pytest.fixture
 def st_struct(st_fixtures_dir: Path) -> str:
-    return (st_fixtures_dir / "ST_Data.st").read_text(encoding='utf-8')
+    return (st_fixtures_dir / "ST_Data.st").read_text(encoding="utf-8")
 
 
 @pytest.fixture
 def st_gvl(st_fixtures_dir: Path) -> str:
-    return (st_fixtures_dir / "GVL_Constants.st").read_text(encoding='utf-8')
+    return (st_fixtures_dir / "GVL_Constants.st").read_text(encoding="utf-8")
 
 
 @pytest.fixture
 def st_interface(st_fixtures_dir: Path) -> str:
-    return (st_fixtures_dir / "I_Device.st").read_text(encoding='utf-8')
+    return (st_fixtures_dir / "I_Device.st").read_text(encoding="utf-8")
 
 
 @pytest.fixture
 def st_program(st_fixtures_dir: Path) -> str:
-    return (st_fixtures_dir / "PRG_Main.st").read_text(encoding='utf-8')
+    return (st_fixtures_dir / "PRG_Main.st").read_text(encoding="utf-8")
 
 
 @pytest.fixture
 def st_function(st_fixtures_dir: Path) -> str:
-    return (st_fixtures_dir / "FC_Calculate.st").read_text(encoding='utf-8')
+    return (st_fixtures_dir / "FC_Calculate.st").read_text(encoding="utf-8")
 
 
 @pytest.fixture
 def xml_simple_block(xml_fixtures_dir: Path) -> str:
-    return (xml_fixtures_dir / "FB_SimpleBlock.TcPOU").read_text(encoding='utf-8')
+    return (xml_fixtures_dir / "FB_SimpleBlock.TcPOU").read_text(encoding="utf-8")
 
 
 @pytest.fixture
 def xml_with_methods(xml_fixtures_dir: Path) -> str:
-    return (xml_fixtures_dir / "FB_WithMethods.TcPOU").read_text(encoding='utf-8')
+    return (xml_fixtures_dir / "FB_WithMethods.TcPOU").read_text(encoding="utf-8")
 
 
 @pytest.fixture
 def xml_enum(xml_fixtures_dir: Path) -> str:
-    return (xml_fixtures_dir / "E_Status.TcDUT").read_text(encoding='utf-8')
+    return (xml_fixtures_dir / "E_Status.TcDUT").read_text(encoding="utf-8")
 
 
 @pytest.fixture
 def xml_gvl(xml_fixtures_dir: Path) -> str:
-    return (xml_fixtures_dir / "GVL_Constants.TcGVL").read_text(encoding='utf-8')
+    return (xml_fixtures_dir / "GVL_Constants.TcGVL").read_text(encoding="utf-8")
 
 
 @pytest.fixture
 def xml_interface(xml_fixtures_dir: Path) -> str:
-    return (xml_fixtures_dir / "I_Device.TcIO").read_text(encoding='utf-8')
+    return (xml_fixtures_dir / "I_Device.TcIO").read_text(encoding="utf-8")
 
 
 @pytest.fixture

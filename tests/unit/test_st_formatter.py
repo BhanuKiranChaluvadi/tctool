@@ -1,7 +1,6 @@
 # Tools/tests/unit/test_st_formatter.py
 """Unit tests for st_formatter.py module."""
 
-
 import pytest
 
 from tctool.formatters.st_formatter import STFormatter
@@ -58,7 +57,7 @@ END_CASE"""
         formatter = STFormatter()
         result = formatter.format(code)
         # CASE body should be indented
-        lines = result.strip().split('\n')
+        lines = result.strip().split("\n")
         assert lines[0] == "CASE nState OF"
         assert "END_CASE" in lines[-1]
 
@@ -97,7 +96,7 @@ UNTIL nCounter >= 10
 END_REPEAT"""
         formatter = STFormatter()
         result = formatter.format(code)
-        lines = result.strip().split('\n')
+        lines = result.strip().split("\n")
         assert lines[0] == "REPEAT"
         assert "    nCounter" in lines[1]
 
@@ -129,7 +128,7 @@ class TestSTFormatterSpacing:
         code = "nValue := 42;    \nbDone := TRUE;  "
         formatter = STFormatter()
         result = formatter.format(code)
-        for line in result.split('\n'):
+        for line in result.split("\n"):
             assert line == line.rstrip(), f"Line has trailing whitespace: '{line}'"
 
 
@@ -145,7 +144,7 @@ nValue : INT;
 END_VAR"""
         formatter = STFormatter()
         result = formatter.format(code)
-        lines = result.strip().split('\n')
+        lines = result.strip().split("\n")
         assert lines[0] == "VAR"
         assert lines[-1] == "END_VAR"
         # Middle lines should be indented

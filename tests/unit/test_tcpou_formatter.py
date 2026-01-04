@@ -5,7 +5,6 @@ Tests the TcPOUFormatter class for formatting TwinCAT XML files,
 normalizing CDATA sections and XML structure.
 """
 
-
 import pytest
 
 from tctool.formatters.xml_formatter import TcPOUFormatter
@@ -13,6 +12,7 @@ from tctool.formatters.xml_formatter import TcPOUFormatter
 # =============================================================================
 # Fixtures
 # =============================================================================
+
 
 @pytest.fixture
 def formatter():
@@ -23,7 +23,7 @@ def formatter():
 @pytest.fixture
 def sample_tcpou_xml():
     """Sample TcPOU XML content."""
-    return '''<?xml version="1.0" encoding="utf-8"?>
+    return """<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Sample" Id="{12345678-1234-1234-1234-123456789abc}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Sample
@@ -39,13 +39,13 @@ END_VAR]]></Declaration>
 END_IF]]></ST>
     </Implementation>
   </POU>
-</TcPlcObject>'''
+</TcPlcObject>"""
 
 
 @pytest.fixture
 def poorly_indented_cdata():
     """CDATA content with inconsistent indentation."""
-    return '''<?xml version="1.0" encoding="utf-8"?>
+    return """<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Test" Id="{12345678-1234-1234-1234-123456789abc}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Test
@@ -58,12 +58,13 @@ def poorly_indented_cdata():
         END_IF]]></ST>
     </Implementation>
   </POU>
-</TcPlcObject>'''
+</TcPlcObject>"""
 
 
 # =============================================================================
 # Test Classes
 # =============================================================================
+
 
 @pytest.mark.unit
 class TestFormatterInstantiation:
@@ -76,9 +77,9 @@ class TestFormatterInstantiation:
 
     def test_formatter_has_required_methods(self, formatter):
         """Test that formatter has expected methods."""
-        assert hasattr(formatter, 'format_file')
-        assert hasattr(formatter, 'normalize_cdata')
-        assert hasattr(formatter, 'process')
+        assert hasattr(formatter, "format_file")
+        assert hasattr(formatter, "normalize_cdata")
+        assert hasattr(formatter, "process")
 
 
 @pytest.mark.unit
@@ -97,9 +98,9 @@ class TestNormalizeCDATA:
 
     def test_removes_common_indentation(self, formatter):
         """Test removal of common leading indentation."""
-        content = '''line1
+        content = """line1
     line2
-    line3'''
+    line3"""
         result = formatter.normalize_cdata(content)
         # First line kept as-is, subsequent lines have min indent removed
         assert "line1" in result
@@ -108,22 +109,22 @@ class TestNormalizeCDATA:
 
     def test_preserves_relative_indentation(self, formatter):
         """Test that relative indentation is preserved."""
-        content = '''IF TRUE THEN
+        content = """IF TRUE THEN
     x := 1;
         y := 2;
-END_IF'''
+END_IF"""
         result = formatter.normalize_cdata(content)
-        lines = result.split('\n')
+        lines = result.split("\n")
         # Check relative indentation preserved
         assert lines[0] == "IF TRUE THEN"
 
     def test_handles_empty_lines(self, formatter):
         """Test handling of empty lines."""
-        content = '''line1
+        content = """line1
 
-line3'''
+line3"""
         result = formatter.normalize_cdata(content)
-        lines = result.split('\n')
+        lines = result.split("\n")
         assert len(lines) == 3
         assert lines[1] == ""  # Empty line preserved
 
@@ -257,7 +258,7 @@ class TestMethodFormatting:
 
     def test_method_preserved(self, formatter, tmp_path):
         """Test that method elements are preserved."""
-        xml = '''<?xml version="1.0" encoding="utf-8"?>
+        xml = """<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_WithMethod" Id="{12345678-1234-1234-1234-123456789abc}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_WithMethod
@@ -275,7 +276,7 @@ DoSomething := TRUE;]]></ST>
       </Implementation>
     </Method>
   </POU>
-</TcPlcObject>'''
+</TcPlcObject>"""
 
         test_file = tmp_path / "test.TcPOU"
         test_file.write_text(xml, encoding="utf-8")
@@ -293,7 +294,7 @@ class TestPropertyFormatting:
 
     def test_property_preserved(self, formatter, tmp_path):
         """Test that property elements are preserved."""
-        xml = '''<?xml version="1.0" encoding="utf-8"?>
+        xml = """<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_WithProperty" Id="{12345678-1234-1234-1234-123456789abc}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_WithProperty
@@ -314,7 +315,7 @@ END_VAR]]></Declaration>
       </Get>
     </Property>
   </POU>
-</TcPlcObject>'''
+</TcPlcObject>"""
 
         test_file = tmp_path / "test.TcPOU"
         test_file.write_text(xml, encoding="utf-8")
@@ -333,7 +334,7 @@ class TestEdgeCases:
 
     def test_empty_implementation_cdata(self, formatter, tmp_path):
         """Test handling of empty implementation CDATA."""
-        xml = '''<?xml version="1.0" encoding="utf-8"?>
+        xml = """<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Empty" Id="{12345678-1234-1234-1234-123456789abc}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Empty
@@ -343,7 +344,7 @@ END_VAR]]></Declaration>
       <ST><![CDATA[]]></ST>
     </Implementation>
   </POU>
-</TcPlcObject>'''
+</TcPlcObject>"""
 
         test_file = tmp_path / "test.TcPOU"
         test_file.write_text(xml, encoding="utf-8")
@@ -354,7 +355,7 @@ END_VAR]]></Declaration>
 
     def test_special_characters_in_cdata(self, formatter, tmp_path):
         """Test special characters in CDATA are preserved."""
-        xml = '''<?xml version="1.0" encoding="utf-8"?>
+        xml = """<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Special" Id="{12345678-1234-1234-1234-123456789abc}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Special
@@ -365,7 +366,7 @@ END_VAR]]></Declaration>
       <ST><![CDATA[// Comment with <special> & characters]]></ST>
     </Implementation>
   </POU>
-</TcPlcObject>'''
+</TcPlcObject>"""
 
         test_file = tmp_path / "test.TcPOU"
         test_file.write_text(xml, encoding="utf-8")
@@ -378,7 +379,7 @@ END_VAR]]></Declaration>
 
     def test_comments_preserved(self, formatter, tmp_path):
         """Test that ST comments are preserved."""
-        xml = '''<?xml version="1.0" encoding="utf-8"?>
+        xml = """<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Comments" Id="{12345678-1234-1234-1234-123456789abc}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Comments
@@ -391,7 +392,7 @@ END_VAR]]></Declaration>
 x := 1; // inline comment]]></ST>
     </Implementation>
   </POU>
-</TcPlcObject>'''
+</TcPlcObject>"""
 
         test_file = tmp_path / "test.TcPOU"
         test_file.write_text(xml, encoding="utf-8")
@@ -416,7 +417,7 @@ class TestDUTFormatting:
 
     def test_dut_enum_formatted(self, formatter, tmp_path):
         """Test formatting a DUT enum file."""
-        xml = '''<?xml version="1.0" encoding="utf-8"?>
+        xml = """<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <DUT Name="E_Test" Id="{12345678-1234-1234-1234-123456789abc}">
     <Declaration><![CDATA[TYPE E_Test :
@@ -426,7 +427,7 @@ class TestDUTFormatting:
 );
 END_TYPE]]></Declaration>
   </DUT>
-</TcPlcObject>'''
+</TcPlcObject>"""
 
         test_file = tmp_path / "E_Test.TcDUT"
         test_file.write_text(xml, encoding="utf-8")
@@ -449,14 +450,14 @@ class TestGVLFormatting:
 
     def test_gvl_formatted(self, formatter, tmp_path):
         """Test formatting a GVL file."""
-        xml = '''<?xml version="1.0" encoding="utf-8"?>
+        xml = """<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <GVL Name="GVL_Test" Id="{12345678-1234-1234-1234-123456789abc}">
     <Declaration><![CDATA[VAR_GLOBAL
     G_MAX_COUNT : INT := 100;
 END_VAR]]></Declaration>
   </GVL>
-</TcPlcObject>'''
+</TcPlcObject>"""
 
         test_file = tmp_path / "GVL_Test.TcPOU"
         test_file.write_text(xml, encoding="utf-8")

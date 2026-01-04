@@ -15,6 +15,7 @@ from tctool.converters.xml_to_st import STGenerator, TwinCATXMLParser
 # Fixtures
 # =============================================================================
 
+
 @pytest.fixture
 def parser():
     """Create a TwinCATXMLParser instance."""
@@ -42,6 +43,7 @@ def xml_fixtures_dir(fixtures_dir):
 # =============================================================================
 # Test Classes
 # =============================================================================
+
 
 @pytest.mark.integration
 class TestXMLToSTFunctionBlock:
@@ -228,7 +230,7 @@ class TestXMLToSTEdgeCases:
 
     def test_empty_implementation(self, parser, generator):
         """Test handling of empty implementation."""
-        xml = '''<?xml version="1.0" encoding="utf-8"?>
+        xml = """<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Empty" Id="{12345678-1234-1234-1234-123456789abc}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Empty
@@ -238,7 +240,7 @@ END_VAR]]></Declaration>
       <ST><![CDATA[]]></ST>
     </Implementation>
   </POU>
-</TcPlcObject>'''
+</TcPlcObject>"""
 
         tc_obj = parser.parse(xml)
         st = generator.generate(tc_obj)
@@ -247,7 +249,7 @@ END_VAR]]></Declaration>
 
     def test_special_characters_preserved(self, parser, generator):
         """Test special characters are preserved."""
-        xml = '''<?xml version="1.0" encoding="utf-8"?>
+        xml = """<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Special" Id="{12345678-1234-1234-1234-123456789abc}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Special
@@ -258,7 +260,7 @@ END_VAR]]></Declaration>
       <ST><![CDATA[// Nothing]]></ST>
     </Implementation>
   </POU>
-</TcPlcObject>'''
+</TcPlcObject>"""
 
         tc_obj = parser.parse(xml)
         st = generator.generate(tc_obj)

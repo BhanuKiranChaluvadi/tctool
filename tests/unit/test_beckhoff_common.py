@@ -5,7 +5,6 @@ Tests the shared components for Beckhoff Tools including diagnostic types,
 severity enum, and file system interfaces.
 """
 
-
 import pytest
 
 from tctool.core.common import Diagnostic, LocalFileSystem, Severity
@@ -14,23 +13,24 @@ from tctool.core.common import Diagnostic, LocalFileSystem, Severity
 # Test Classes
 # =============================================================================
 
+
 @pytest.mark.unit
 class TestSeverity:
     """Tests for Severity enum."""
 
     def test_severity_error_exists(self):
         """Test ERROR severity level exists."""
-        assert hasattr(Severity, 'ERROR')
+        assert hasattr(Severity, "ERROR")
         assert Severity.ERROR is not None
 
     def test_severity_warning_exists(self):
         """Test WARNING severity level exists."""
-        assert hasattr(Severity, 'WARNING')
+        assert hasattr(Severity, "WARNING")
         assert Severity.WARNING is not None
 
     def test_severity_info_exists(self):
         """Test INFO severity level exists."""
-        assert hasattr(Severity, 'INFO')
+        assert hasattr(Severity, "INFO")
         assert Severity.INFO is not None
 
     def test_severity_values_are_unique(self):
@@ -50,7 +50,7 @@ class TestDiagnostic:
             column=5,
             message="Test error",
             severity=Severity.ERROR,
-            rule_id="TEST001"
+            rule_id="TEST001",
         )
         assert diag.line_number == 10
         assert diag.column == 5
@@ -66,7 +66,7 @@ class TestDiagnostic:
             message="Test error",
             severity=Severity.ERROR,
             rule_id="TEST001",
-            line_content="x := 1;"
+            line_content="x := 1;",
         )
         assert diag.line_content == "x := 1;"
 
@@ -77,7 +77,7 @@ class TestDiagnostic:
             column=5,
             message="Test error",
             severity=Severity.ERROR,
-            rule_id="TEST001"
+            rule_id="TEST001",
         )
         result = str(diag)
         assert "[ERROR]" in result
@@ -92,7 +92,7 @@ class TestDiagnostic:
             column=1,
             message="Warning message",
             severity=Severity.WARNING,
-            rule_id="WARN001"
+            rule_id="WARN001",
         )
         result = str(diag)
         assert "[WARNING]" in result
@@ -104,7 +104,7 @@ class TestDiagnostic:
             column=1,
             message="Info message",
             severity=Severity.INFO,
-            rule_id="INFO001"
+            rule_id="INFO001",
         )
         result = str(diag)
         assert "[INFO]" in result
@@ -239,22 +239,14 @@ class TestDiagnosticEdgeCases:
     def test_diagnostic_zero_line_number(self):
         """Test diagnostic with zero line number."""
         diag = Diagnostic(
-            line_number=0,
-            column=0,
-            message="Test",
-            severity=Severity.INFO,
-            rule_id="TEST"
+            line_number=0, column=0, message="Test", severity=Severity.INFO, rule_id="TEST"
         )
         assert diag.line_number == 0
 
     def test_diagnostic_empty_message(self):
         """Test diagnostic with empty message."""
         diag = Diagnostic(
-            line_number=1,
-            column=1,
-            message="",
-            severity=Severity.WARNING,
-            rule_id="TEST"
+            line_number=1, column=1, message="", severity=Severity.WARNING, rule_id="TEST"
         )
         assert diag.message == ""
 
@@ -262,11 +254,7 @@ class TestDiagnosticEdgeCases:
         """Test diagnostic with special characters in message."""
         message = "Missing ';' after <statement> in 'function'"
         diag = Diagnostic(
-            line_number=1,
-            column=1,
-            message=message,
-            severity=Severity.ERROR,
-            rule_id="SYNTAX001"
+            line_number=1, column=1, message=message, severity=Severity.ERROR, rule_id="SYNTAX001"
         )
         assert diag.message == message
         assert "<statement>" in str(diag)
