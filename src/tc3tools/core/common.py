@@ -1,8 +1,8 @@
 """
-Shared components for TcTool.
+Shared components for TC3Tools.
 
-This module contains common interfaces, domain entities, and utilities
-used across the tctool package.
+This module contains common types, interfaces, and utilities
+used across the tc3tools package.
 """
 
 from __future__ import annotations

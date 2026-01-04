@@ -3,7 +3,7 @@
 
 import pytest
 
-from tctool.formatters.st_formatter import STFormatter
+from tc3tools.formatters.st_formatter import STFormatter
 
 
 class TestSTFormatterIndentation:

@@ -16,7 +16,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Protocol
 
-from tctool.core.common import Diagnostic, IFileSystem, Severity
+from tc3tools.core.common import Diagnostic, IFileSystem, Severity
 
 # =============================================================================
 # DOMAIN ENTITIES

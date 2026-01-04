@@ -9,8 +9,8 @@ from pathlib import Path
 
 import pytest
 
-from tctool.converters.st_to_xml import STParser, XMLGenerator
-from tctool.converters.xml_to_st import STGenerator, TwinCATXMLParser
+from tc3tools.converters.st_to_xml import STParser, XMLGenerator
+from tc3tools.converters.xml_to_st import STGenerator, TwinCATXMLParser
 
 # =============================================================================
 # Helper Functions

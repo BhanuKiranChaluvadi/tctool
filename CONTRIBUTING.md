@@ -1,6 +1,6 @@
-# Contributing to TcTool
+# Contributing to tc3tools
 
-Thank you for your interest in contributing to TcTool! This document provides guidelines and information for contributors.
+Thank you for your interest in contributing to tc3tools! This document provides guidelines and information for contributors.
 
 ## Code of Conduct
 
@@ -46,8 +46,8 @@ Please be respectful and constructive in all interactions. We welcome contributo
 
 ```bash
 # Clone your fork
-git clone https://github.com/YOUR_USERNAME/tctool.git
-cd tctool
+git clone https://github.com/BhanuKiranChaluvadi/tctool.git
+cd tc3tools
 
 # Create virtual environment
 python -m venv .venv
@@ -72,7 +72,7 @@ pre-commit install
 pytest
 
 # Run with coverage
-pytest --cov=tctool --cov-report=html
+pytest --cov=tc3tools --cov-report=html
 
 # Run specific test categories
 pytest -m unit          # Unit tests only
@@ -96,7 +96,7 @@ ruff check .
 ruff format --check .
 
 # Run type checker
-mypy src/tctool
+mypy src/tc3tools
 
 # Auto-fix linting issues
 ruff check --fix .
@@ -159,8 +159,8 @@ def convert_file(input_path: Path, output_path: Path) -> bool:
 ## Project Structure
 
 ```
-tctool/
-├── src/tctool/           # Main package
+tc3tools/
+├── src/tc3tools/           # Main package
 │   ├── core/             # Shared components
 │   ├── converters/       # Format converters
 │   └── formatters/       # Code formatters/linters
@@ -191,7 +191,7 @@ tctool/
 
 ```python
 import pytest
-from tctool.formatters.st_formatter import STFormatter
+from tc3tools.formatters.st_formatter import STFormatter
 
 class TestSTFormatter:
     """Tests for STFormatter class."""

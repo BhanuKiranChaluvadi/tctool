@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-from tctool.converters.xml_to_st import STGenerator, TwinCATXMLParser
+from tc3tools.converters.xml_to_st import STGenerator, TwinCATXMLParser
 
 # =============================================================================
 # Fixtures

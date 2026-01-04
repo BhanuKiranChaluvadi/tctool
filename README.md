@@ -1,9 +1,9 @@
-# TcTool
+# tc3tools
 
-[![PyPI - Version](https://img.shields.io/pypi/v/tctool.svg)](https://pypi.org/project/tctool)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/tctool.svg)](https://pypi.org/project/tctool)
-[![CI](https://github.com/bhanukiran/tctool/actions/workflows/ci.yml/badge.svg)](https://github.com/bhanukiran/tctool/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/bhanukiran/tctool/branch/main/graph/badge.svg)](https://codecov.io/gh/bhanukiran/tctool)
+[![PyPI - Version](https://img.shields.io/pypi/v/tc3tools.svg)](https://pypi.org/project/tc3tools)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/tc3tools.svg)](https://pypi.org/project/tc3tools)
+[![CI](https://github.com/BhanuKiranChaluvadi/tctool/actions/workflows/ci.yml/badge.svg)](https://github.com/BhanuKiranChaluvadi/tctool/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/BhanuKiranChaluvadi/tctool/branch/main/graph/badge.svg)](https://codecov.io/gh/BhanuKiranChaluvadi/tctool)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A CLI toolkit for **TwinCAT/Beckhoff** development workflows. Format, lint, and convert Structured Text (ST) and TwinCAT XML files.
@@ -18,13 +18,13 @@ A CLI toolkit for **TwinCAT/Beckhoff** development workflows. Format, lint, and 
 ## Installation
 
 ```bash
-pip install tctool
+pip install tc3tools
 ```
 
 For development:
 
 ```bash
-pip install tctool[dev]
+pip install tc3tools[dev]
 ```
 
 ## Quick Start
@@ -33,43 +33,43 @@ pip install tctool[dev]
 
 ```bash
 # Check formatting (dry-run)
-tctool fmt-st --check --format .
+tc3tools fmt-st --check --format .
 
 # Format files in-place
-tctool fmt-st --format --inplace .
+tc3tools fmt-st --format --inplace .
 
 # Format a single file
-tctool fmt-st --format --inplace ./src/FB_Controller.st
+tc3tools fmt-st --format --inplace ./src/FB_Controller.st
 ```
 
 ### Lint Structured Text Files
 
 ```bash
 # Check syntax and naming conventions
-tctool fmt-st --check .
+tc3tools fmt-st --check .
 ```
 
 ### Format TwinCAT XML Files
 
 ```bash
 # Check XML formatting
-tctool fmt-xml --check ./TcPOU/src
+tc3tools fmt-xml --check ./TcPOU/src
 
 # Format XML files
-tctool fmt-xml ./TcPOU/src
+tc3tools fmt-xml ./TcPOU/src
 ```
 
 ### Convert Between Formats
 
 ```bash
 # Convert ST to TwinCAT XML
-tctool st2xml ./src ./TcPOU/output
+tc3tools st2xml ./src ./TcPOU/output
 
 # Convert ST to XML, ignoring certain folders
-tctool st2xml ./src ./TcPOU/output --ignore Tests Documentation
+tc3tools st2xml ./src ./TcPOU/output --ignore Tests Documentation
 
 # Convert TwinCAT XML to ST
-tctool xml2st ./TcPOU/src ./st_export
+tc3tools xml2st ./TcPOU/src ./st_export
 ```
 
 ## Commands
@@ -86,7 +86,7 @@ tctool xml2st ./TcPOU/src ./st_export
 #### `fmt-st`
 
 ```
-tctool fmt-st [OPTIONS] [INPUT]
+tc3tools fmt-st [OPTIONS] [INPUT]
 
 Arguments:
   INPUT           Input file or directory (default: .)
@@ -100,7 +100,7 @@ Options:
 #### `fmt-xml`
 
 ```
-tctool fmt-xml [OPTIONS] [INPUT]
+tc3tools fmt-xml [OPTIONS] [INPUT]
 
 Arguments:
   INPUT           Input file or directory (default: .)
@@ -112,7 +112,7 @@ Options:
 #### `st2xml`
 
 ```
-tctool st2xml [OPTIONS] [INPUT] [OUTPUT]
+tc3tools st2xml [OPTIONS] [INPUT] [OUTPUT]
 
 Arguments:
   INPUT           Input file or directory (default: .)
@@ -125,7 +125,7 @@ Options:
 #### `xml2st`
 
 ```
-tctool xml2st [OPTIONS] [INPUT] [OUTPUT]
+tc3tools xml2st [OPTIONS] [INPUT] [OUTPUT]
 
 Arguments:
   INPUT           Input file or directory (default: .)
@@ -160,8 +160,8 @@ Arguments:
 
 ```bash
 # Clone the repository
-git clone https://github.com/bhanukiran/tctool.git
-cd tctool
+git clone https://github.com/BhanuKiranChaluvadi/tctool.git
+cd tc3tools
 
 # Create virtual environment
 python -m venv .venv
@@ -181,7 +181,7 @@ pre-commit install
 pytest
 
 # Run with coverage
-pytest --cov=tctool --cov-report=html
+pytest --cov=tc3tools --cov-report=html
 
 # Run specific test categories
 pytest -m unit
@@ -197,7 +197,7 @@ ruff check .
 ruff format --check .
 
 # Type checking
-mypy src/tctool
+mypy src/tc3tools
 
 # Auto-fix issues
 ruff check --fix .
@@ -207,8 +207,8 @@ ruff format .
 ## Project Structure
 
 ```
-tctool/
-├── src/tctool/
+tc3tools/
+├── src/tc3tools/
 │   ├── __init__.py
 │   ├── __main__.py
 │   ├── cli.py              # CLI entry point

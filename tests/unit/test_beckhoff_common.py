@@ -7,7 +7,7 @@ severity enum, and file system interfaces.
 
 import pytest
 
-from tctool.core.common import Diagnostic, LocalFileSystem, Severity
+from tc3tools.core.common import Diagnostic, LocalFileSystem, Severity
 
 # =============================================================================
 # Test Classes

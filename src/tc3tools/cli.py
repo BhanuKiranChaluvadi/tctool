@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-TcTool CLI - Unified CLI for TwinCAT operations.
+TC3Tools CLI - Unified CLI for TwinCAT operations.
 
 Commands:
   fmt-st      Format and check Structured Text (.st) files.
@@ -15,11 +15,11 @@ import argparse
 import sys
 from pathlib import Path
 
-from tctool.converters.st_to_xml import STConverter
-from tctool.converters.xml_to_st import ConverterService, STGenerator, TwinCATXMLParser
-from tctool.core.common import LocalFileSystem
-from tctool.formatters.st_formatter import STFormatter, STSyntaxChecker, STToolService
-from tctool.formatters.xml_formatter import TcPOUFormatter
+from tc3tools.converters.st_to_xml import STConverter
+from tc3tools.converters.xml_to_st import ConverterService, STGenerator, TwinCATXMLParser
+from tc3tools.core.common import LocalFileSystem
+from tc3tools.formatters.st_formatter import STFormatter, STSyntaxChecker, STToolService
+from tc3tools.formatters.xml_formatter import TcPOUFormatter
 
 
 def cmd_fmt_st(args: argparse.Namespace) -> int:
@@ -79,9 +79,9 @@ def cmd_st2xml(args: argparse.Namespace) -> int:
 
 
 def main() -> int:
-    """Main entry point for tctool CLI."""
+    """Main entry point for tc3tools CLI."""
     parser = argparse.ArgumentParser(
-        description="TcTool - Unified CLI for TwinCAT operations",
+        description="TC3Tools - Unified CLI for TwinCAT operations",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument(

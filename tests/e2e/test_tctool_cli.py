@@ -1,5 +1,5 @@
 """
-End-to-end tests for tctool CLI.
+End-to-end tests for tc3tools CLI.
 
 Tests the complete CLI workflow including all subcommands.
 """
@@ -16,9 +16,9 @@ import pytest
 TOOLS_DIR = Path(__file__).parent.parent.parent
 
 
-def run_tctool(*args, cwd=None):
-    """Run tctool CLI with given arguments using python -m."""
-    cmd = [sys.executable, "-m", "tctool", *list(args)]
+def run_tc3tools(*args, cwd=None):
+    """Run tc3tools CLI with given arguments using python -m."""
+    cmd = [sys.executable, "-m", "tc3tools", *list(args)]
     result = subprocess.run(
         cmd,
         capture_output=True,
@@ -39,30 +39,30 @@ class TestCLIHelp:
 
     def test_main_help(self):
         """Test main help command."""
-        result = run_tctool("--help")
+        result = run_tc3tools("--help")
         assert result.returncode == 0
-        assert "tctool" in result.stdout.lower() or "usage" in result.stdout.lower()
+        assert "tc3tools" in result.stdout.lower() or "usage" in result.stdout.lower()
 
     def test_st2xml_help(self):
         """Test st2xml subcommand help."""
-        result = run_tctool("st2xml", "--help")
+        result = run_tc3tools("st2xml", "--help")
         assert result.returncode == 0
         assert "st2xml" in result.stdout.lower() or "input" in result.stdout.lower()
 
     def test_xml2st_help(self):
         """Test xml2st subcommand help."""
-        result = run_tctool("xml2st", "--help")
+        result = run_tc3tools("xml2st", "--help")
         assert result.returncode == 0
         assert "xml2st" in result.stdout.lower() or "input" in result.stdout.lower()
 
     def test_fmt_st_help(self):
         """Test fmt-st subcommand help."""
-        result = run_tctool("fmt-st", "--help")
+        result = run_tc3tools("fmt-st", "--help")
         assert result.returncode == 0
 
     def test_fmt_xml_help(self):
         """Test fmt-xml subcommand help."""
-        result = run_tctool("fmt-xml", "--help")
+        result = run_tc3tools("fmt-xml", "--help")
         assert result.returncode == 0
 
 
@@ -104,7 +104,7 @@ END_FUNCTION_BLOCK"""
         output_dir = temp_dir / "output"
 
         # Use positional arguments (input output)
-        result = run_tctool("st2xml", str(sample_st_file), str(output_dir))
+        result = run_tc3tools("st2xml", str(sample_st_file), str(output_dir))
 
         # Command should succeed
         assert result.returncode == 0, f"stderr: {result.stderr}"
@@ -133,7 +133,7 @@ END_FUNCTION_BLOCK"""
         output_dir = temp_dir / "output"
 
         # Use positional arguments
-        result = run_tctool("st2xml", str(temp_dir), str(output_dir))
+        result = run_tc3tools("st2xml", str(temp_dir), str(output_dir))
 
         assert result.returncode == 0, f"stderr: {result.stderr}"
 
@@ -181,7 +181,7 @@ END_IF]]></ST>
         output_dir = temp_dir / "output"
 
         # Use positional arguments
-        result = run_tctool("xml2st", str(sample_xml_file), str(output_dir))
+        result = run_tc3tools("xml2st", str(sample_xml_file), str(output_dir))
 
         # Command should succeed
         assert result.returncode == 0, f"stderr: {result.stderr}"
@@ -199,7 +199,7 @@ END_IF]]></ST>
         output_dir = temp_dir / "output"
 
         # Use positional arguments
-        result = run_tctool("xml2st", str(temp_dir), str(output_dir))
+        result = run_tc3tools("xml2st", str(temp_dir), str(output_dir))
 
         assert result.returncode == 0, f"stderr: {result.stderr}"
 
@@ -233,13 +233,13 @@ END_FUNCTION_BLOCK"""
 
     def test_fmt_st_check(self, unformatted_st_file):
         """Test checking ST file format."""
-        result = run_tctool("fmt-st", str(unformatted_st_file), "--check")
+        result = run_tc3tools("fmt-st", str(unformatted_st_file), "--check")
         # May return non-zero if formatting needed, that's OK
         assert result.returncode in [0, 1]
 
     def test_fmt_st_in_place(self, temp_dir, unformatted_st_file):
         """Test formatting ST file in-place."""
-        result = run_tctool("fmt-st", str(unformatted_st_file), "--inplace")
+        result = run_tc3tools("fmt-st", str(unformatted_st_file), "--inplace")
 
         # Command should succeed
         assert result.returncode == 0, f"stderr: {result.stderr}"
@@ -280,13 +280,13 @@ END_VAR]]></Declaration>
 
     def test_fmt_xml_check(self, sample_xml_file):
         """Test checking XML file format."""
-        result = run_tctool("fmt-xml", str(sample_xml_file), "--check")
+        result = run_tc3tools("fmt-xml", str(sample_xml_file), "--check")
         # Check mode should work
         assert result.returncode in [0, 1]
 
     def test_fmt_xml_format(self, sample_xml_file):
         """Test formatting XML file."""
-        result = run_tctool("fmt-xml", str(sample_xml_file))
+        result = run_tc3tools("fmt-xml", str(sample_xml_file))
         assert result.returncode == 0, f"stderr: {result.stderr}"
 
 
@@ -322,7 +322,7 @@ END_FUNCTION_BLOCK"""
         st_out_dir = temp_dir / "st_out"
 
         # ST -> XML
-        result1 = run_tctool("st2xml", str(st_file), str(xml_dir))
+        result1 = run_tc3tools("st2xml", str(st_file), str(xml_dir))
         assert result1.returncode == 0, f"st2xml failed: {result1.stderr}"
 
         # Find generated XML file
@@ -330,7 +330,7 @@ END_FUNCTION_BLOCK"""
         assert len(xml_files) >= 1, "No XML file generated"
 
         # XML -> ST
-        result2 = run_tctool("xml2st", str(xml_files[0]), str(st_out_dir))
+        result2 = run_tc3tools("xml2st", str(xml_files[0]), str(st_out_dir))
         assert result2.returncode == 0, f"xml2st failed: {result2.stderr}"
 
         # Check recovered ST
@@ -366,7 +366,7 @@ class TestCLIWithFixtures:
 
         output_dir = temp_output_dir / "output"
 
-        result = run_tctool("st2xml", str(st_dir), str(output_dir))
+        result = run_tc3tools("st2xml", str(st_dir), str(output_dir))
 
         assert result.returncode == 0, f"stderr: {result.stderr}"
 
@@ -378,7 +378,7 @@ class TestCLIWithFixtures:
 
         output_dir = temp_output_dir / "output"
 
-        result = run_tctool("xml2st", str(xml_dir), str(output_dir))
+        result = run_tc3tools("xml2st", str(xml_dir), str(output_dir))
 
         assert result.returncode == 0, f"stderr: {result.stderr}"
 
@@ -389,12 +389,12 @@ class TestCLIErrorHandling:
 
     def test_unknown_command(self):
         """Test unknown command error."""
-        result = run_tctool("unknown")
+        result = run_tc3tools("unknown")
         assert result.returncode != 0
 
     def test_nonexistent_file(self):
         """Test error on nonexistent file."""
-        result = run_tctool("st2xml", "/nonexistent/path/file.st")
+        result = run_tc3tools("st2xml", "/nonexistent/path/file.st")
         # Should handle gracefully - check both stdout and stderr for error messages
         combined_output = (result.stdout + result.stderr).lower()
         assert (
@@ -403,5 +403,5 @@ class TestCLIErrorHandling:
 
     def test_invalid_arguments(self):
         """Test error on invalid arguments."""
-        result = run_tctool("st2xml", "--invalid-arg")
+        result = run_tc3tools("st2xml", "--invalid-arg")
         assert result.returncode != 0

@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "tctool"
+name = "tc3tools"
 version = "0.1.0"
 description = "A CLI toolkit for TwinCAT/Beckhoff development workflows - format, lint, and convert Structured Text and TwinCAT XML files"
 readme = "README.md"
@@ -57,14 +57,14 @@ dev = [
 ]
 
 [project.scripts]
-tctool = "tctool.cli:main"
+tc3tools = "tc3tools.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/bhanukiran/tctool"
-Documentation = "https://github.com/bhanukiran/tctool#readme"
-Repository = "https://github.com/bhanukiran/tctool.git"
-Issues = "https://github.com/bhanukiran/tctool/issues"
-Changelog = "https://github.com/bhanukiran/tctool/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/BhanuKiranChaluvadi/tctool"
+Documentation = "https://github.com/BhanuKiranChaluvadi/tctool#readme"
+Repository = "https://github.com/BhanuKiranChaluvadi/tctool.git"
+Issues = "https://github.com/BhanuKiranChaluvadi/tctool/issues"
+Changelog = "https://github.com/BhanuKiranChaluvadi/tctool/blob/main/CHANGELOG.md"
 
 # =============================================================================
 # TOOL CONFIGURATIONS
@@ -80,7 +80,7 @@ include = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/tctool"]
+packages = ["src/tc3tools"]
 
 # -----------------------------------------------------------------------------
 # Ruff - Linter and Formatter
@@ -112,7 +112,7 @@ ignore = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["tctool"]
+known-first-party = ["tc3tools"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = [
@@ -179,7 +179,7 @@ filterwarnings = [
 # Coverage
 # -----------------------------------------------------------------------------
 [tool.coverage.run]
-source = ["src/tctool"]
+source = ["src/tc3tools"]
 branch = true
 parallel = true
 omit = [
@@ -202,6 +202,6 @@ fail_under = 60
 
 [tool.coverage.paths]
 source = [
-    "src/tctool",
-    "*/site-packages/tctool",
+    "src/tc3tools",
+    "*/site-packages/tc3tools",
 ]

@@ -57,7 +57,7 @@ jobs:
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.publish_target == 'testpypi'
     environment:
       name: testpypi
-      url: https://test.pypi.org/p/tctool
+      url: https://test.pypi.org/p/tc3tools
     permissions:
       id-token: write
 
@@ -83,7 +83,7 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && github.event.inputs.publish_target == 'pypi')
     environment:
       name: pypi
-      url: https://pypi.org/p/tctool
+      url: https://pypi.org/p/tc3tools
     permissions:
       id-token: write
 

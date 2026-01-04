@@ -1,6 +1,6 @@
-"""Core shared components for TcTool."""
+"""Core shared components for TC3Tools."""
 
-from tctool.core.common import (
+from tc3tools.core.common import (
     Diagnostic,
     IFileSystem,
     LocalFileSystem,

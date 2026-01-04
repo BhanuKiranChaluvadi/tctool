@@ -7,7 +7,7 @@ normalizing CDATA sections and XML structure.
 
 import pytest
 
-from tctool.formatters.xml_formatter import TcPOUFormatter
+from tc3tools.formatters.xml_formatter import TcPOUFormatter
 
 # =============================================================================
 # Fixtures

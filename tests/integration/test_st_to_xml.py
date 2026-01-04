@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from tctool.converters.st_to_xml import STParser, XMLGenerator
+from tc3tools.converters.st_to_xml import STParser, XMLGenerator
 
 # =============================================================================
 # Fixtures

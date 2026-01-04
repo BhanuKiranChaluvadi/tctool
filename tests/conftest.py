@@ -109,41 +109,41 @@ def xml_interface(xml_fixtures_dir: Path) -> str:
 
 @pytest.fixture
 def st_parser():
-    from tctool.converters.st_to_xml import STParser
+    from tc3tools.converters.st_to_xml import STParser
 
     return STParser()
 
 
 @pytest.fixture
 def xml_parser():
-    from tctool.converters.xml_to_st import TwinCATXMLParser
+    from tc3tools.converters.xml_to_st import TwinCATXMLParser
 
     return TwinCATXMLParser()
 
 
 @pytest.fixture
 def st_formatter():
-    from tctool.formatters.st_formatter import STFormatter
+    from tc3tools.formatters.st_formatter import STFormatter
 
     return STFormatter()
 
 
 @pytest.fixture
 def tcpou_formatter():
-    from tctool.formatters.xml_formatter import TcPOUFormatter
+    from tc3tools.formatters.xml_formatter import TcPOUFormatter
 
     return TcPOUFormatter()
 
 
 @pytest.fixture
 def xml_generator():
-    from tctool.converters.st_to_xml import XMLGenerator
+    from tc3tools.converters.st_to_xml import XMLGenerator
 
     return XMLGenerator()
 
 
 @pytest.fixture
 def st_generator():
-    from tctool.converters.xml_to_st import STGenerator
+    from tc3tools.converters.xml_to_st import STGenerator
 
     return STGenerator()

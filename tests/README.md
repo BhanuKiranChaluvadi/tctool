@@ -1,7 +1,7 @@
 # Tools/tests/README.md
-# TcTool Test Suite
+# tc3tools Test Suite
 
-This directory contains comprehensive tests for the TcTool CLI and its underlying modules.
+This directory contains comprehensive tests for the tc3tools CLI and its underlying modules.
 
 ## Directory Structure
 
@@ -43,7 +43,7 @@ tests/
 │   └── test_roundtrip.py
 └── e2e/                     # End-to-end tests
     ├── __init__.py
-    └── test_tctool_cli.py
+    └── test_tc3tools_cli.py
 ```
 
 ## Test Categories
@@ -64,7 +64,7 @@ Test interactions between modules:
 
 ### End-to-End Tests (`tests/e2e/`)
 Test the CLI tool as a whole:
-- `test_tctool_cli.py` - CLI commands, arguments, error handling
+- `test_tc3tools_cli.py` - CLI commands, arguments, error handling
 
 ## Running Tests
 
@@ -133,7 +133,7 @@ Corresponding TcPOU/TcDUT/TcGVL/TcIO files:
 
 1. **Unit tests**: Add to appropriate `tests/unit/test_*.py` file
 2. **Integration tests**: Add to `tests/integration/` directory
-3. **E2E tests**: Add to `tests/e2e/test_tctool_cli.py`
+3. **E2E tests**: Add to `tests/e2e/test_tc3tools_cli.py`
 4. **New fixtures**: Add to `tests/fixtures/st/` or `tests/fixtures/xml/`
 
 ### Test Naming Convention

@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Protocol
 
 if TYPE_CHECKING:
-    from tctool.core.common import IFileSystem
+    from tc3tools.core.common import IFileSystem
 
 # =============================================================================
 # DOMAIN ENTITIES

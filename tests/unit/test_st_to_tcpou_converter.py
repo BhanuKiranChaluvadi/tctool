@@ -3,7 +3,7 @@
 
 import pytest
 
-from tctool.converters.st_to_xml import (
+from tc3tools.converters.st_to_xml import (
     FileType,
     STParser,
     XMLGenerator,
