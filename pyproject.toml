@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "tc3tools"
-version = "0.1.0"
+version = "0.1.1"
 description = "A CLI toolkit for TwinCAT/Beckhoff development workflows - format, lint, and convert Structured Text and TwinCAT XML files"
 readme = "README.md"
 license = "MIT"
