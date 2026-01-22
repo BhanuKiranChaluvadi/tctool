@@ -141,7 +141,9 @@ class STParser:
 
     PATTERNS: ClassVar[dict[str, re.Pattern[str]]] = {
         "file_type": re.compile(
-            r"^\s*(PROGRAM|FUNCTION_BLOCK|FUNCTION|TYPE|INTERFACE)\s+(?:ABSTRACT\s+)?(\w+)(?:\s*:\s*(\w+(?:\([^)]+\))?))?",
+            r"^\s*(PROGRAM|FUNCTION_BLOCK|FUNCTION|TYPE|INTERFACE)\s+"
+            r"(?:PUBLIC\s+|PRIVATE\s+|INTERNAL\s+|PROTECTED\s+)?"
+            r"(?:ABSTRACT\s+)?(\w+)(?:\s*:\s*(\w+(?:\([^)]+\))?))?",
             re.MULTILINE,
         ),
         "var_global": re.compile(r"^\s*VAR_GLOBAL", re.MULTILINE),
