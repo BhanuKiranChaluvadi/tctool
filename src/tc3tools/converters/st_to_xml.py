@@ -832,7 +832,8 @@ class STConverter:
     ) -> bool:
         """Convert a single ST file."""
         try:
-            content = input_path.read_text(encoding="utf-8")
+            # Use utf-8-sig to automatically handle BOM if present
+            content = input_path.read_text(encoding="utf-8-sig")
             filename_hint = input_path.stem
 
             parsed = self.parser.parse(content, filename_hint)
