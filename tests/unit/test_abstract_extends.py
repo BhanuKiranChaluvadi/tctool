@@ -29,9 +29,9 @@ class TestAbstractAndExtends:
 
         assert parsed.name == "FB_ValveActionNode"
         assert parsed.file_type == FileType.FUNCTION_BLOCK
-        # Check methods contain the FUNCTION_BLOCK declaration with EXTENDS
-        assert any("EXTENDS FB_TreeNode" in m.declaration for m in parsed.methods)
-        assert any("ABSTRACT" in m.declaration for m in parsed.methods)
+        # Check FUNCTION_BLOCK declaration contains EXTENDS and ABSTRACT
+        assert "EXTENDS FB_TreeNode" in parsed.declaration
+        assert "ABSTRACT" in parsed.declaration
         assert len(parsed.methods) == 3
 
     def test_fb_with_extends(self, parser, fixture_path):
@@ -95,5 +95,5 @@ class TestCommentBlockInterference:
         # Should match actual declaration, not comment example
         assert parsed.name == "FB_ValveActionNode"
         # Check the FUNCTION_BLOCK declaration in content
-        assert any("ABSTRACT" in m.declaration for m in parsed.methods)
-        assert any("EXTENDS FB_TreeNode" in m.declaration for m in parsed.methods)
+        assert "ABSTRACT" in parsed.declaration
+        assert "EXTENDS FB_TreeNode" in parsed.declaration
