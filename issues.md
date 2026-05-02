@@ -1,2 +1,0 @@
-1. --ignore attribute is not working 
-2. THe converted function block fomr the st files is not formatted properly . the main function block code . Observer the flow manual panel function block main logic looks like this. THere is an unnesary tab from the second line of the code. 
