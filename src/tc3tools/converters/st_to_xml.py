@@ -143,16 +143,25 @@ class STParser:
         "file_type": re.compile(
             r"^\s*(PROGRAM|FUNCTION_BLOCK|FUNCTION|TYPE|INTERFACE)\s+"
             r"(?:PUBLIC\s+|PRIVATE\s+|INTERNAL\s+|PROTECTED\s+)?"
-            r"(?:ABSTRACT\s+)?(\w+)(?:\s*:\s*(\w+(?:\([^)]+\))?))?",
+            r"(?:ABSTRACT\s+)?(\w+)"
+            r"(?:\s+EXTENDS\s+(\w+))?"  # EXTENDS clause
+            r"(?:\s+IMPLEMENTS\s+[\w\s,]+)?"  # IMPLEMENTS clause (optional, ignored)
+            r"(?:\s*:\s*(\w+(?:\([^)]+\))?))?",  # Return type for FUNCTION
             re.MULTILINE,
         ),
         "var_global": re.compile(r"^\s*VAR_GLOBAL", re.MULTILINE),
         "method": re.compile(
-            r"((?:\{[^}]+\}\s*)*METHOD\s+(?:PRIVATE|PUBLIC|PROTECTED|INTERNAL)?\s*(?:ABSTRACT\s+)?(\w+)(?:\s*:\s*(\w+(?:\([^)]+\))?))?.*?END_METHOD)",
+            r"((?:\{[^}]+\}\s*)*METHOD\s+"
+            r"(?:(?:PRIVATE|PUBLIC|PROTECTED|INTERNAL)\s+)?(?:ABSTRACT\s+)?"
+            r"(?:(?:PRIVATE|PUBLIC|PROTECTED|INTERNAL)\s+)?"
+            r"(\w+)(?:\s*:\s*(\w+(?:\([^)]+\))?))?.*?END_METHOD)",
             re.DOTALL,
         ),
         "method_header": re.compile(
-            r"^((?:\{[^}]+\}\s*)*)METHOD\s+(PRIVATE|PUBLIC|PROTECTED|INTERNAL)?\s*(?:ABSTRACT\s+)?(\w+)(?:\s*:\s*(\w+(?:\([^)]+\))?))?",
+            r"^((?:\{[^}]+\}\s*)*)METHOD\s+"
+            r"(?:(?:PRIVATE|PUBLIC|PROTECTED|INTERNAL)\s+)?(?:ABSTRACT\s+)?"
+            r"(?:(?:PRIVATE|PUBLIC|PROTECTED|INTERNAL)\s+)?"
+            r"(\w+)(?:\s*:\s*(\w+(?:\([^)]+\))?))?",
             re.MULTILINE,
         ),
         "property": re.compile(
@@ -177,7 +186,10 @@ class STParser:
 
     def parse(self, content: str, filename_hint: str = "") -> ParsedContent:
         """Parse ST content and return structured data."""
-        file_type, name, return_type = self._detect_file_type(content, filename_hint)
+        # Strip leading comments before detecting file type to avoid matching
+        # FUNCTION_BLOCK declarations in code examples within comments
+        content_for_detection = TextUtils.strip_leading_block_comments(content)
+        file_type, name, return_type = self._detect_file_type(content_for_detection, filename_hint)
 
         if file_type == FileType.GVL:
             return self._parse_gvl(content, name)
@@ -189,12 +201,19 @@ class STParser:
             return self._parse_pou(content, name, file_type, return_type)
 
     def _detect_file_type(self, content: str, filename_hint: str = "") -> tuple[FileType, str, str]:
-        """Detect file type and extract name."""
+        """Detect file type and extract name.
+        
+        Returns:
+            tuple: (file_type, name, return_type)
+            Note: EXTENDS clause is captured but preserved in declaration, not in return_type
+        """
         match = self.PATTERNS["file_type"].search(content)
         if match:
             type_str = match.group(1)
             name = match.group(2)
-            return_type = match.group(3) or ""
+            # Group 3 is EXTENDS base class (we keep it in the declaration)
+            # Group 4 is return type (only for FUNCTION)
+            return_type = match.group(4) or ""
             file_type = FileType[type_str.upper().replace(" ", "_")]
             return file_type, name, return_type
 
@@ -290,10 +309,13 @@ class STParser:
         self, content: str, name: str, file_type: FileType, return_type: str
     ) -> ParsedContent:
         """Parse PROGRAM, FUNCTION_BLOCK, or FUNCTION."""
-        methods = self._extract_methods(content)
-        properties = self._extract_properties(content)
-        declaration = self._extract_declaration(content)
-        implementation = self._extract_implementation(content, file_type)
+        # Strip leading comment block to avoid matching METHOD patterns in comments
+        content_without_comments = TextUtils.strip_leading_block_comments(content)
+        
+        methods = self._extract_methods(content_without_comments)
+        properties = self._extract_properties(content_without_comments)
+        declaration = self._extract_declaration(content_without_comments)
+        implementation = self._extract_implementation(content_without_comments, file_type)
 
         return ParsedContent(
             name=name,
@@ -314,10 +336,17 @@ class STParser:
             method_name = match.group(2)
             return_type = match.group(3) or ""
 
+            # Extract access specifier manually since it's a non-capturing group
             header_match = self.PATTERNS["method_header"].search(full_method)
-            access_specifier = (
-                header_match.group(2) if header_match and header_match.group(2) else ""
-            )
+            access_specifier = ""
+            if header_match:
+                # Look for access specifier in the full method text
+                access_match = re.search(
+                    r"METHOD\s+(PRIVATE|PUBLIC|PROTECTED|INTERNAL)\s+",
+                    full_method,
+                )
+                if access_match:
+                    access_specifier = access_match.group(1)
 
             declaration, implementation = self._split_method_content(full_method)
 
@@ -508,7 +537,7 @@ class STParser:
         if var_matches:
             last_end_var = var_matches[-1]
             boundary = min(first_member_pos, end_pos)
-            impl = content[last_end_var.end() : boundary].strip()
+            impl = TextUtils.normalize_indentation(content[last_end_var.end() : boundary]).strip()
             impl = TextUtils.strip_leading_block_comments(impl)
             if impl:
                 implementation_parts.append(impl)
@@ -516,7 +545,7 @@ class STParser:
         all_members = method_matches + property_matches
         if all_members:
             last_member_end = max(m.end() for m in all_members)
-            post_member_impl = content[last_member_end:end_pos].strip()
+            post_member_impl = TextUtils.normalize_indentation(content[last_member_end:end_pos]).strip()
             if post_member_impl:
                 implementation_parts.append(post_member_impl)
 

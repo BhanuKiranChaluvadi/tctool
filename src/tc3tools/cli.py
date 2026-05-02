@@ -134,7 +134,13 @@ def main() -> int:
         default="tcpou_export",
         help="Output directory for XML files (default: tcpou_export)",
     )
-    p_st2xml.add_argument("--ignore", nargs="*", help="Folders to ignore")
+    p_st2xml.add_argument(
+        "--ignore",
+        action="append",
+        metavar="FOLDER",
+        default=None,
+        help="Folder to ignore (can be specified multiple times, e.g. --ignore tests --ignore build)",
+    )
     p_st2xml.set_defaults(func=cmd_st2xml)
 
     args = parser.parse_args()
