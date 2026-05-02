@@ -202,7 +202,7 @@ class STParser:
 
     def _detect_file_type(self, content: str, filename_hint: str = "") -> tuple[FileType, str, str]:
         """Detect file type and extract name.
-        
+
         Returns:
             tuple: (file_type, name, return_type)
             Note: EXTENDS clause is captured but preserved in declaration, not in return_type
@@ -311,7 +311,7 @@ class STParser:
         """Parse PROGRAM, FUNCTION_BLOCK, or FUNCTION."""
         # Strip leading comment block to avoid matching METHOD patterns in comments
         content_without_comments = TextUtils.strip_leading_block_comments(content)
-        
+
         methods = self._extract_methods(content_without_comments)
         properties = self._extract_properties(content_without_comments)
         declaration = self._extract_declaration(content_without_comments)
@@ -545,7 +545,9 @@ class STParser:
         all_members = method_matches + property_matches
         if all_members:
             last_member_end = max(m.end() for m in all_members)
-            post_member_impl = TextUtils.normalize_indentation(content[last_member_end:end_pos]).strip()
+            post_member_impl = TextUtils.normalize_indentation(
+                content[last_member_end:end_pos]
+            ).strip()
             if post_member_impl:
                 implementation_parts.append(post_member_impl)
 
